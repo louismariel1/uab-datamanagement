@@ -1,6 +1,4 @@
-Below is a **comprehensive MCQ practice set covering the full Chunk 1–6 material**, including NoSQL fundamentals, ACID/BASE, CAP, all four NoSQL models, MongoDB CRUD and querying, column-family databases, graph databases, RDF, and property graphs.
-
- ## Part A — NoSQL Fundamentals
+# Part A — NoSQL Fundamentals
 
  ### 1\. What is the main characteristic of a traditional relational database?
 
