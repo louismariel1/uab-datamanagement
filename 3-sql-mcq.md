@@ -1,6 +1,4 @@
-Below is a comprehensive MCQ set covering the SQL and relational-database material from **Chunks 1–5**, including SQL basics, CRUD, filtering, aggregation, `GROUP BY`, `HAVING`, JOINs, keys, and B-tree indexes.
-
- # Comprehensive SQL & Relational Databases MCQ
+# Comprehensive SQL & Relational Databases MCQ
 
  ## Section A — SQL and Relational Database Fundamentals
 
