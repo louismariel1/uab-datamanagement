@@ -1,6 +1,4 @@
-Absolutely. Based on **Chunks 1–3**, here is a consolidated summary of the lecture.
-
- # Lecture Summary: Data Modeling and Database Design
+# Lecture Summary: Data Modeling and Database Design
 
  ## 1\. What is Data Modeling?
 
