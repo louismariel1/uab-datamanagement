@@ -1,6 +1,4 @@
-Below is a comprehensive exam-style MCQ bank covering the lecture material from **Chunks 1–3**. I’ve mixed definition, comparison, scenario-based, and application questions so it tests understanding rather than memorization.
-
- # Comprehensive MCQ Bank
+# Comprehensive MCQ Bank
 
  ## Data-Intensive Systems, Reliability, Scalability & Maintainability
 
