@@ -1,4 +1,4 @@
-# Lecture Summary: Data Modeling and Database Design
+# Data Modeling and Database Design
 
  ## 1\. What is Data Modeling?
 
