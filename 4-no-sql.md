@@ -1,6 +1,4 @@
-## Cumulative Summary — Chunks 1 + 2 + 3 + 4 + 6
-
- ### 1\. NoSQL Databases: Introduction
+# 1\. NoSQL Databases: Introduction
 
  - **SQL/relational databases** use tables, rows, columns, fixed schemas, and defined relationships. They are best for structured data and strong consistency.
 - **NoSQL databases** use flexible data models and are designed for large-scale, diverse, semi-structured, or unstructured data.
