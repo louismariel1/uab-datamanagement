@@ -1,7 +1,4 @@
 # Comprehensive MCQ: Data Modeling & Database Design
-
- Below is a **comprehensive exam-style MCQ set based on the lecture material from Chunks 1–3**. Each question includes the **correct answer and a brief explanation** so you can use it for both practice and revision.
-
 ---
 
  ## Part 1 — Fundamentals of Data Modeling
