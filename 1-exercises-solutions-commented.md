@@ -1,6 +1,4 @@
-Yes. I compared the solutions I suggested earlier with the lecturer’s official solutions. **Overall, the approaches are very similar**, but there are a few important differences in modeling choices, cardinalities, and the interpretation of Problem 1 that are worth correcting for exam purposes.
-
- ## 1\. Problem 1 — System Architecture & Scalability
+## 1\. Problem 1 — System Architecture & Scalability
 
  ### Comparison
 
