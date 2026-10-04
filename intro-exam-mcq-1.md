@@ -1,6 +1,4 @@
-Yes — that is a better format for exam preparation. Below is a **non-MCQ exam question bank** based on the lecture material from **chunks 1–3**, with **model answers and scenario-based questions**. I’ve included short-answer, explanation, comparison, and longer case-study questions.
-
- # Exam-Style Questions and Model Answers
+# Exam-Style Questions and Model Answers
 
  ## Part 1 — Core Concepts
 
