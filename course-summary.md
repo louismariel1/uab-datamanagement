@@ -1,5 +1,3 @@
-Absolutely. I’ve got both chunks now. The first chunk is mainly **course structure, syllabus, evaluation, and grading**, while the second introduces the **motivation for data management and its connection to AI**.
-
  ## SQL / Data Management — Lecture 0 Summary
 
  ### 1\. Course overview
