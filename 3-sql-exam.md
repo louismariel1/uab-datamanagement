@@ -1,6 +1,4 @@
-Below is a regenerated **comprehensive non-MCQ exam** based on **chunks 1–5**, with the **answer directly following each question**. I’ve included both conceptual and practical SQL questions, including CRUD, filtering, aggregation, `GROUP BY`, `HAVING`, JOINs, and B-tree indexes.
-
- # SQL & Relational Databases — Exam Questions with Answers
+# SQL & Relational Databases — Exam Questions with Answers
 
  ## Section A — Fundamentals
 
