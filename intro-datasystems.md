@@ -1,6 +1,4 @@
-Absolutely. I’ll consolidate the three chunks into a single lecture summary, removing the exported-document formatting and keeping the concepts, definitions, comparisons, and exam-relevant points clear.
-
- # Data-Intensive Systems, Reliability, Scalability & Maintainability
+# Data-Intensive Systems, Reliability, Scalability & Maintainability
 
  ## 1\. Data-Intensive Applications
 
