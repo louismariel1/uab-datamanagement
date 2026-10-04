@@ -1,7 +1,3 @@
-Absolutely — here is the **merged summary of Chunks 1–5**, combining the first and second summaries into one coherent study guide.
-
- Merged SQL and Relational Database Summary — Chunks 1–5
-
 # SQL and Relational Databases — Complete Summary
 
  ## 1\. What is SQL?
