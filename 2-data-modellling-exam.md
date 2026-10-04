@@ -1,5 +1,3 @@
-Below is a **comprehensive non-MCQ exam with model answers** covering the major concepts from the lecture notes on **Data Modeling and Database Design**, including data models, abstraction levels, entities/attributes/relationships, keys, normalization, relational databases, and database-modeling schemas.
-
  # Data Modeling and Database Design
 
  ## Comprehensive Non-MCQ Examination with Model Answers
