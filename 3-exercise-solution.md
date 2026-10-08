@@ -1,335 +1,565 @@
-## Phase 1 — Identify the entities and attributes
+# Exercise 3 - Solution Outliine
 
-From the practical, the core entities we need are **Patient, Doctor, Admission**, and potentially **Specialty** if specialty is stored as a separate entity in the improved design.
+- **Phase 1:** What the original database contains.
+- **Phase 2:** How the original tables are related.
+- **Phase 3:** Add PKs/FKs and identify design problems.
 
-A useful first-pass table is:
+# Phase 1 — Current Database Structure
 
-| Entity | Attributes | Description |
-| --- | --- | --- |
-| **Patient** | `patient_id`, `first_name`, `last_name`, `gender`, `date_of_birth`, `weight`, `height`, `allergies` | Stores information about patients |
-| **Doctor** | `doctor_id`, `first_name`, `last_name`, `specialty` / `specialty_id` | Stores information about doctors |
-| **Admission** | `admission_id`, `patient_id`, `doctor_id`, `admission_date`, `discharge_date` | Records a patient's hospital admission |
-| **Specialty** | `specialty_id`, `specialty_name` | Stores medical specialties if separated during normalization |
+Based strictly on your definitions, the original database has these four tables.
 
-The assignment itself confirms several of these attributes because the later queries require:
+## 1\. PATIENTS
 
-- `patients.first_name`
-- `patients.last_name`
-- `patients.gender`
-- `patients.allergies`
-- `patients.date_of_birth`
-- `patients.weight`
-- `patients.height`
-- `admissions.admission_date`
-- `admissions.discharge_date`
-- `doctor_id`
-- doctor name
-- doctor specialty
+Current definition:
 
-So these are the important attributes we need to preserve.
+```
+PATIENTS
+--------------------------------------------------
+Patient_id       INTEGER
+first_name       VARCHAR(30)
+last_name        VARCHAR(30)
+gender           CHAR(1)
+birth_date       DATE
+city             VARCHAR(30)
+province_id      CHAR(2)
+allergies        DECIMAL(3,0)
+weight           DECIMAL(4,0)
+```
+
+### Interpretation
+
+`Patient_id` should uniquely identify each patient.
+
+`province_id` appears to identify the province where the patient lives, because there is a separate `Province_names` table containing the province information.
+
+Therefore:
+
+```
+patient_id  → Primary Key
+province_id → Foreign Key
+```
 
 ---
 
-# Phase 2 — Identify the relationships
+## 2\. DOCTORS
 
-Now we ask how these entities relate.
-
-### Patient → Admission
-
-A patient can be admitted to the hospital multiple times.
+Current definition:
 
 ```
-PATIENT 1 ───────────< ADMISSION
+DOCTORS
+--------------------------------------------------
+doctor_id       INTEGER
+first_name      VARCHAR(30)
+last_name       VARCHAR(30)
+specialty       VARCHAR(25)
+```
+
+### Interpretation
+
+`doctor_id` should uniquely identify each doctor.
+
+Therefore:
+
+```
+doctor_id → Primary Key
+```
+
+At this stage, `specialty` is simply an attribute of the doctor.
+
+This is important because **we should not automatically create a SPECIALTY table yet**. Your current definition doesn't show one, so we first treat `specialty` as a regular attribute and later decide whether normalization requires separating it.
+
+---
+
+## 3\. ADMISSIONS
+
+Current definition:
+
+```
+ADMISSIONS
+--------------------------------------------------
+patient_id             INTEGER
+admission_date         DATE
+discharge_date         DATE
+diagnosis              VARCHAR(50)
+attending_doctor_id    INTEGER
+```
+
+This table has an important issue:
+
+> There is currently no obvious single `admission_id`.
+
+We therefore need to determine what uniquely identifies an admission.
+
+A likely candidate is:
+
+```
+(patient_id, admission_date)
+```
+
+because a patient could have multiple admissions, but this assumes that a patient cannot have two admissions beginning on the same date.
+
+Alternatively, the better design would introduce:
+
+```
+admission_id
+```
+
+as a surrogate Primary Key.
+
+We'll discuss this under normalization.
+
+The obvious foreign keys are:
+
+```
+patient_id
+attending_doctor_id
+```
+
+with:
+
+```
+ADMISSIONS.patient_id
+        ↓
+PATIENTS.patient_id
+```
+
+and:
+
+```
+ADMISSIONS.attending_doctor_id
+        ↓
+DOCTORS.doctor_id
+```
+
+---
+
+## 4\. PROVINCE\_NAMES
+
+Current definition:
+
+```
+PROVINCE_NAMES
+--------------------------------------------------
+province_id       CHAR(2)
+province_name     VARCHAR(30)
+```
+
+`province_id` should uniquely identify each province.
+
+Therefore:
+
+```
+province_id → Primary Key
+```
+
+And because `PATIENTS` contains `province_id`, we have:
+
+```
+PATIENTS.province_id
+        ↓
+PROVINCE_NAMES.province_id
+```
+
+So `PATIENTS.province_id` is a Foreign Key.
+
+---
+
+# Phase 2 — Relationships
+
+Now we can identify the relationships more confidently.
+
+## Relationship 1: Province → Patients
+
+One province can have many patients.
+
+```
+PROVINCE_NAMES 1 ───────────< PATIENTS
 ```
 
 Therefore:
 
-**Patient : Admission = 1:N**
+```
+PROVINCE_NAMES
+     1
+     │
+     │
+     N
+  PATIENTS
+```
 
-One patient can have many admissions, but each admission belongs to one patient.
+The FK is:
+
+```
+PATIENTS.province_id
+```
+
+referencing:
+
+```
+PROVINCE_NAMES.province_id
+```
 
 ---
 
-### Doctor → Admission
+## Relationship 2: Patient → Admissions
 
-A doctor can be responsible for many admissions.
+One patient can have multiple admissions.
 
 ```
-DOCTOR 1 ───────────< ADMISSION
+PATIENTS 1 ───────────< ADMISSIONS
 ```
 
-Therefore:
+The FK is:
 
-**Doctor : Admission = 1:N**
+```
+ADMISSIONS.patient_id
+```
 
-One doctor can be associated with many admissions, but each admission is associated with one doctor.
+referencing:
+
+```
+PATIENTS.patient_id
+```
 
 ---
 
-### Specialty → Doctor
+## Relationship 3: Doctor → Admissions
 
-If we normalize specialty into its own table:
-
-```
-SPECIALTY 1 ───────────< DOCTOR
-```
-
-Therefore:
-
-**Specialty : Doctor = 1:N**
-
-One specialty can have many doctors, while each doctor belongs to one specialty.
-
-For example:
+One doctor can attend multiple admissions.
 
 ```
-CARDIOLOGY
-    │
-    ├── Dr. Smith
-    ├── Dr. Jones
-    └── Dr. Brown
+DOCTORS 1 ───────────< ADMISSIONS
+```
+
+The FK is:
+
+```
+ADMISSIONS.attending_doctor_id
+```
+
+referencing:
+
+```
+DOCTORS.doctor_id
 ```
 
 ---
 
 # Phase 3 — Add PKs and FKs
 
-Now we can produce the table structure with the **Primary Keys and Foreign Keys explicitly identified**.
+Now let's produce the table you asked for, with the missing keys filled in.
 
-## 3.1 Patient table
-
-```
-┌─────────────────────────────────┐
-│            PATIENT              │
-├─────────────────────────────────┤
-│ PK  patient_id                  │
-│     first_name                  │
-│     last_name                   │
-│     gender                      │
-│     date_of_birth               │
-│     weight                      │
-│     height                      │
-│     allergies                   │
-└─────────────────────────────────┘
-```
-
-### Primary Key
-
-```
-patient_id
-```
-
-`patient_id` uniquely identifies each patient.
-
-There is **no FK** in this table in the basic design.
-
----
-
-# 3.2 Doctor table
-
-If specialty is kept as a separate table, the Doctor table becomes:
-
-```
-┌─────────────────────────────────┐
-│             DOCTOR              │
-├─────────────────────────────────┤
-│ PK  doctor_id                   │
-│     first_name                  │
-│     last_name                   │
-│ FK  specialty_id                │
-└─────────────────────────────────┘
-```
-
-### Primary Key
-
-```
-doctor_id
-```
-
-### Foreign Key
-
-```
-specialty_id
-```
-
-It references:
-
-```
-SPECIALTY.specialty_id
-```
-
-So:
-
-```
-DOCTOR.specialty_id
-          ↓
-SPECIALTY.specialty_id
-```
-
----
-
-# 3.3 Specialty table
-
-If specialty is normalized into its own entity:
-
-```
-┌─────────────────────────────────┐
-│           SPECIALTY             │
-├─────────────────────────────────┤
-│ PK  specialty_id                │
-│     specialty_name              │
-└─────────────────────────────────┘
-```
-
-### Primary Key
-
-```
-specialty_id
-```
-
-There is no FK here.
-
----
-
-# 3.4 Admission table
-
-This is the important linking table.
-
-```
-┌─────────────────────────────────┐
-│           ADMISSION             │
-├─────────────────────────────────┤
-│ PK  admission_id                │
-│ FK  patient_id                  │
-│ FK  doctor_id                   │
-│     admission_date              │
-│     discharge_date              │
-└─────────────────────────────────┘
-```
-
-### Primary Key
-
-```
-admission_id
-```
-
-### Foreign Keys
-
-```
-patient_id → PATIENT.patient_id
-doctor_id  → DOCTOR.doctor_id
-```
-
-So we have:
-
-```
-ADMISSION.patient_id
-        ↓
-PATIENT.patient_id
-```
-
-and:
-
-```
-ADMISSION.doctor_id
-        ↓
-DOCTOR.doctor_id
-```
-
----
-
-# Complete PK/FK Table
-
-This is probably the table you're looking for for **Phase 3**:
+## Final Phase 3 key structure
 
 | Table | Column | Key | References |
 | --- | --- | --- | --- |
-| **PATIENT** | `patient_id` | **PK** | — |
+| **PATIENTS** | `patient_id` | **PK** | — |
 |  | `first_name` | — | — |
 |  | `last_name` | — | — |
 |  | `gender` | — | — |
-|  | `date_of_birth` | — | — |
-|  | `weight` | — | — |
-|  | `height` | — | — |
+|  | `birth_date` | — | — |
+|  | `city` | — | — |
+|  | `province_id` | **FK** | `PROVINCE_NAMES.province_id` |
 |  | `allergies` | — | — |
-| **DOCTOR** | `doctor_id` | **PK** | — |
+|  | `weight` | — | — |
+| **DOCTORS** | `doctor_id` | **PK** | — |
 |  | `first_name` | — | — |
 |  | `last_name` | — | — |
-|  | `specialty_id` | **FK** | `SPECIALTY.specialty_id` |
-| **SPECIALTY** | `specialty_id` | **PK** | — |
-|  | `specialty_name` | — | — |
-| **ADMISSION** | `admission_id` | **PK** | — |
-|  | `patient_id` | **FK** | `PATIENT.patient_id` |
-|  | `doctor_id` | **FK** | `DOCTOR.doctor_id` |
-|  | `admission_date` | — | — |
+|  | `specialty` | — | — |
+| **ADMISSIONS** | `patient_id` | **FK** | `PATIENTS.patient_id` |
+|  | `admission_date` | **PK candidate** | — |
 |  | `discharge_date` | — | — |
+|  | `diagnosis` | — | — |
+|  | `attending_doctor_id` | **FK** | `DOCTORS.doctor_id` |
+| **PROVINCE\_NAMES** | `province_id` | **PK** | — |
+|  | `province_name` | — | — |
+
+### Important issue with ADMISSIONS
+
+I would **not yet mark****`admission_date`****as a PK by itself**.
+
+The current definition gives us:
+
+```
+(patient_id, admission_date, discharge_date, diagnosis, attending_doctor_id)
+```
+
+but no `admission_id`.
+
+A reasonable original-design interpretation could be:
+
+```
+PK = (patient_id, admission_date)
+```
+
+However, this has an assumption:
+
+> A patient cannot have two admissions beginning on the same date.
+
+That's not necessarily guaranteed.
+
+For a robust database design, I'd recommend adding:
+
+```
+admission_id INTEGER PRIMARY KEY
+```
+
+to `ADMISSIONS`.
+
+That would give us:
+
+```
+ADMISSIONS
+--------------------------------------------------
+admission_id          PK
+patient_id            FK → PATIENTS.patient_id
+admission_date
+discharge_date
+diagnosis
+attending_doctor_id   FK → DOCTORS.doctor_id
+```
+
+This is likely the cleaner solution for your final 3NF design.
 
 ---
 
-# Complete relationship diagram
+# Updated ERD — Current Design
 
-Putting the PKs, FKs, and cardinalities together:
-
-```
-                    ┌──────────────────────┐
-                    │      SPECIALTY       │
-                    ├──────────────────────┤
-                    │ PK specialty_id      │
-                    │    specialty_name    │
-                    └──────────┬───────────┘
-                               │
-                              1│
-                               │
-                              N│
-                    ┌──────────▼───────────┐
-                    │        DOCTOR        │
-                    ├──────────────────────┤
-                    │ PK doctor_id         │
-                    │    first_name        │
-                    │    last_name         │
-                    │ FK specialty_id      │
-                    └──────────┬───────────┘
-                               │
-                              1│
-                               │
-                              N│
-                    ┌──────────▼───────────┐
-                    │      ADMISSION       │
-                    ├──────────────────────┤
-                    │ PK admission_id      │
-                    │ FK patient_id        │
-                    │ FK doctor_id         │
-                    │    admission_date    │
-                    │    discharge_date    │
-                    └──────────▲───────────┘
-                               │
-                              N│
-                               │
-                              1│
-                    ┌──────────┴───────────┐
-                    │       PATIENT        │
-                    ├──────────────────────┤
-                    │ PK patient_id        │
-                    │    first_name        │
-                    │    last_name         │
-                    │    gender            │
-                    │    date_of_birth     │
-                    │    weight            │
-                    │    height            │
-                    │    allergies         │
-                    └──────────────────────┘
-```
-
-The relationships can therefore be summarized as:
+Based on your definitions, the relationships are:
 
 ```
-SPECIALTY 1 ─────── N DOCTOR
-DOCTOR    1 ─────── N ADMISSION
-PATIENT   1 ─────── N ADMISSION
+                         ┌─────────────────────────┐
+                         │     PROVINCE_NAMES      │
+                         ├─────────────────────────┤
+                         │ PK province_id          │
+                         │    province_name        │
+                         └────────────┬────────────┘
+                                      │
+                                      │ 1
+                                      │
+                                      │ N
+                         ┌────────────▼────────────┐
+                         │        PATIENTS         │
+                         ├─────────────────────────┤
+                         │ PK patient_id           │
+                         │    first_name           │
+                         │    last_name            │
+                         │    gender               │
+                         │    birth_date           │
+                         │    city                 │
+                         │ FK province_id          │
+                         │    allergies            │
+                         │    weight               │
+                         └────────────┬────────────┘
+                                      │
+                                      │ 1
+                                      │
+                                      │ N
+                         ┌────────────▼────────────┐
+                         │       ADMISSIONS        │
+                         ├─────────────────────────┤
+                         │ PK admission_id*        │
+                         │ FK patient_id           │
+                         │    admission_date      │
+                         │    discharge_date      │
+                         │    diagnosis             │
+                         │ FK attending_doctor_id │
+                         └────────────▲────────────┘
+                                      │
+                                      │ N
+                                      │
+                                      │ 1
+                         ┌────────────┴────────────┐
+                         │         DOCTORS         │
+                         ├─────────────────────────┤
+                         │ PK doctor_id            │
+                         │    first_name           │
+                         │    last_name            │
+                         │    specialty            │
+                         └─────────────────────────┘
+
+* Recommended addition for the improved design
 ```
 
-## One important caveat
+So the cardinalities are:
 
-I would **not yet treat this as the final answer for your assignment** until we verify it against the actual ERD image. In particular, we need to check whether the original ERD has additional entities/attributes or represents `specialty` differently.
+```
+PROVINCE_NAMES  1 ───── N  PATIENTS
 
-**Next step:** if you upload the original **ERD image (image1.png)**, we can compare it against this structure and then do **Phase 2 normalization properly (1NF → 2NF → 3NF)** rather than making assumptions.
+PATIENTS        1 ───── N  ADMISSIONS
+
+DOCTORS         1 ───── N  ADMISSIONS
+```
+
+---
+
+# One correction from our previous Phase 1–3
+
+With the definitions you've now supplied, **we should remove****`SPECIALTY`****from our current Phase 1–3 model**.
+
+Your original table explicitly says:
+
+```
+DOCTORS:
+doctor_id
+first_name
+last_name
+specialty
+```
+
+There is no `specialty_id` and no `SPECIALTY` table.
+
+So for the **original/current ERD**, we should represent:
+
+```
+DOCTORS
+---------------------
+PK doctor_id
+first_name
+last_name
+specialty
+```
+
+We can consider whether `specialty` should become a separate table during **Phase 2 normalization / Phase 3 improved 3NF design**.
+
+---
+
+# Potential normalization issues we'll investigate next
+
+Now that we have the real definitions, there are several things worth investigating in the next phase.
+
+### 1\. `ADMISSIONS` has no clear identifier
+
+This is the biggest structural issue.
+
+We should probably introduce:
+
+```
+admission_id PK
+```
+
+rather than relying on `(patient_id, admission_date)`.
+
+### 2\. `specialty` may be redundant
+
+Currently:
+
+```
+DOCTORS
+doctor_id | first_name | last_name | specialty
+```
+
+If 20 doctors are cardiologists, `"Cardiology"` gets stored 20 times.
+
+We need to decide whether:
+
+```
+SPECIALTIES
+specialty_id
+specialty_name
+```
+
+should be introduced.
+
+### 3\. `province_id` is already reasonably normalized
+
+This is actually a good example of normalization:
+
+```
+PATIENTS
+province_id FK
+       ↓
+PROVINCE_NAMES
+province_id PK
+province_name
+```
+
+Instead of storing:
+
+```
+province_name = "Barcelona"
+```
+
+repeatedly for every patient, the province name is stored once.
+
+### 4\. `allergies` needs investigation
+
+Your definition says:
+
+```
+allergies DECIMAL(3,0)
+```
+
+That looks unusual.
+
+The practical later asks:
+
+> patients whose allergies field is NULL
+
+and:
+
+> change NULL allergies to `'NKA'`
+
+But a `DECIMAL(3,0)` column cannot appropriately store the string `'NKA'`.
+
+So there is almost certainly a **data-type inconsistency in the supplied definition**.
+
+It would make much more sense for `allergies` to be something like:
+
+```
+allergies VARCHAR(...)
+```
+
+if it stores values such as:
+
+```
+Penicillin
+Peanuts
+NKA
+```
+
+We'll need to resolve this before writing the final `CREATE TABLE`.
+
+### 5\. `weight` also needs checking
+
+You gave:
+
+```
+weight DECIMAL(4,0)
+```
+
+This can represent whole-number weights, but the obesity calculation in the assignment suggests weight is a numerical measurement.
+
+A more precise definition might be:
+
+```
+DECIMAL(5,2)
+```
+
+depending on the expected data.
+
+Also, the original assignment mentions **height**, but your current `PATIENTS` definition doesn't contain a `height` column. That's another important inconsistency we should resolve before Phase 4.
+
+---
+
+## Where we are now
+
+We can consider **Phases 1–3 provisionally complete**:
+
+```
+Phase 1
+✓ Identified 4 current tables
+✓ Identified attributes
+
+Phase 2
+✓ Identified relationships
+✓ Identified cardinalities
+
+Phase 3
+✓ Added PKs
+✓ Added FKs
+✓ Identified missing admission identifier
+✓ Identified data-model inconsistencies
+```
+
+The next logical step is **Phase 4: normalization (1NF → 2NF → 3NF)**. There we'll take these current tables and decide exactly what should change, particularly **`ADMISSIONS`****,****`specialty`****,****`allergies`****, and the missing****`height`****field**.
