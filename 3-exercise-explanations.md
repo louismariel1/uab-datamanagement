@@ -1,7 +1,3 @@
-Absolutely. A good way to prepare for this practical is to use **MCQs that test both the theory and the SQL you will actually write**.
-
-Below is a practice set arranged from basic concepts → database design → SQL → more advanced queries.
-
 # MCQ Practice — Healthcare SQL Database Practical
 
 ## 1\. What is the main purpose of a Primary Key?
