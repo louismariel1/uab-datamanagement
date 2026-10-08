@@ -1,4 +1,4 @@
-Absolutely. This assignment is essentially asking you to do **two things**:
+# Data Management - Exercise 3
 
 1. **Design a good healthcare database** from an ERD and implement it in SQL.
 2. **Write SQL queries** that answer practical questions about the healthcare data.
