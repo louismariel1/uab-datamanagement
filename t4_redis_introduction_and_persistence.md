@@ -1,7 +1,3 @@
-## Document 1 — `t4_redis_introduction_and_persistence.md`
-
-Writing
-
 # T4 — Redis Introduction and Persistence
 
 ## Exam Revision Guide
