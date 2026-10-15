@@ -1,5 +1,3 @@
-Writing
-
 # Chunk 6 — Exam Compression: NoSQL Data Modeling
 
 ## 1\. Key-Value Databases
