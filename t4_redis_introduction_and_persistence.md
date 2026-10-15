@@ -1,10 +1,3 @@
-Understood. I’ll consolidate all four supplied documents into two separate Markdown documents:
-
-1. `t4_redis_introduction_and_persistence.md` — the complete, deduplicated exam revision guide, combining Redis fundamentals, caching, persistence, architectures, data types, and practical examples. The document itself will contain no references to chunks or source-part numbers.
-2. `t4_review_questions_and_anwers.md` — a separate question bank with answers and explanations, combining the review questions throughout the supplied material and removing duplicates.
-
-One distinction: the supplied notes identify their questions as practice questions derived from the lecture, rather than confirmed questions explicitly suggested by the lecturer. I’ll preserve that distinction rather than mislabeling them.
-
 ## Document 1 — `t4_redis_introduction_and_persistence.md`
 
 Writing
