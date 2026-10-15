@@ -1,9 +1,3 @@
-I recommend saving this as `t5-mongodb-hands-on-solutions-and-exam-practice.md` if this MongoDB session is Chapter 5 in your course. The filename follows your `t5-...` convention and distinguishes it from the Spark chapter. If MongoDB has a different chapter number in your course, change `t5` accordingly.
-
-The document below includes complete MongoDB shell (`mongosh`) solutions for the 20 required exercises, all five optional exercises, and additional exam-style questions with answers and explanations. I’ve also included a few important assumptions so the aggregation results are meaningful and reproducible.
-
-Writing
-
 # T5 — MongoDB Hands-On Solutions and Exam Practice
 
 **Topic:** MongoDB — E-Commerce Platform\
