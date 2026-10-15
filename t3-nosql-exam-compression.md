@@ -1,9 +1,3 @@
-I’ll merge all seven chunks into one consolidated T4 — NoSQL Databases & Data Modeling: Exam Compression. I’ll remove repeated explanations, organize the material from fundamentals through MongoDB and the other NoSQL models, preserve important examples and exam traps, and combine the practice questions into one revision section.
-
-I’ll also correct terminology where needed—for example, distinguishing wide-column databases from traditional column-oriented analytical storage—and keep the key technical distinctions accurate for a close-book exam.
-
-Writing
-
 # T4 — NoSQL Databases & Data Modeling
 
 ## Complete Exam Compression — Data Management 2026–27
