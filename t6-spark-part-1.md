@@ -1,23 +1,11 @@
-Yes. This is a good workflow for preparing for your exam, and the lecture material you supplied is detailed enough to produce a substantial, exam-oriented compression for T6.
-
-For each of the five chapters, we can follow the same process:
+# T6 — Apache Spark: Exam Compression
 
 1. Exam compression: Condense the supplied lecture notes into definitions, key distinctions, essential code patterns, examples, likely exam questions, and common mistakes.
 2. Save to GitHub: Keep each chapter's compression as a separate Markdown file, so you can revise them independently.
 3. Repeat for all five chapters: Use the actual lecture material for each chapter rather than relying on generic textbook coverage.
 4. Generate a practice exam: Once you provide all five compressions—and ideally retain the original lecture notes too—I can create a practice exam covering the five chapters, with a mix of conceptual questions, code interpretation, practical exercises, and an answer key.
 
-For the compression below, I'll distinguish material explicitly covered in your lecture from clarifications needed to make the explanations and code technically correct. I'll preserve the lecture's emphasis rather than expanding every topic into a textbook chapter.
-
-The material is long, so I'll deliver it in two clearly marked chunks. Save them in order as a single Markdown file. The second chunk will complete the first; do not treat it as a separate chapter.
-
-# T6 — Apache Spark: Exam Compression
-
 Part 1 of 2 · Foundations, architecture, RDDs, PySpark, and DataFrames
-
-Save the following content as `T6-Spark.md`. Append Part 2 to the same file after receiving it.
-
-Writing
 
 # UAB 106566 — Data Management
 
