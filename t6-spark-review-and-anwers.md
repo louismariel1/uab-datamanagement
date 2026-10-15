@@ -1,7 +1,3 @@
-Below is a complete, GitHub-ready document named `t6-spark-review-and-answers.md`. It separates the lecturer’s explicitly included conceptual review questions from additional review questions derived from the lecture, and provides answers with explanations. This distinction will help later when we build a practice exam based on all five chapters.
-
-Writing
-
 # T6 — Spark: Review Questions and Answers
 
 **Course:** Big Data / Distributed Data Processing\
