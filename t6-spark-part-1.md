@@ -1,4 +1,4 @@
-# T6 — Apache Spark: Exam Compression
+# T5 — Apache Spark: Exam Compression
 
 1. Exam compression: Condense the supplied lecture notes into definitions, key distinctions, essential code patterns, examples, likely exam questions, and common mistakes.
 2. Save to GitHub: Keep each chapter's compression as a separate Markdown file, so you can revise them independently.
