@@ -1,7 +1,3 @@
-Yes. I’ll restructure the collection into three complete 120-minute university-style practice exams, each combining foundational concepts, applied problems, and a comprehensive challenge rather than isolating those levels into separate papers.
-
-The exams will progressively increase in difficulty, while retaining the T0–T2 scope, SQL schemas, normalization, indexing, transactions, reliability, and system-design topics from the original material.
-
 ## New exam structure
 
 | Component | Exam 1 | Exam 2 | Exam 3 |
