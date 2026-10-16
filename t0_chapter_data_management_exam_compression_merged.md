@@ -1,12 +1,5 @@
-# Data Management — Complete Exam Compression
-
-**Course:** Data Management (2026–2027)\
-**Professor:** Eduardo Cabrera\
-**Topics:** Introduction to Data Systems, Data Models, Reliability, Scalability, Performance, and Maintainability
-
----
-
-# PART 1 — INTRODUCTION TO DATA SYSTEMS
+# Data Management — T0 Complete Exam Compression
+# INTRODUCTION TO DATA SYSTEMS
 
 ## 1\. Why Data Management?
 
