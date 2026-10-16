@@ -1,4 +1,4 @@
-# T4 — NoSQL Databases & Data Modeling
+# T3 — NoSQL Databases & Data Modeling
 
 ## Complete Exam Compression — Data Management 2026–27
 
