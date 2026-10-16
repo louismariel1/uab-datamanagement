@@ -1,7 +1,3 @@
-Part 2 was not included as a separate part. The intention was to provide the complete T6: Spark exam compression in two chunks, but the previous response appears to have been interrupted.
-
-I'll continue with Part 2, covering the remaining exam material so you can save both parts together in your GitHub repository.
-
 # T6 — Spark Exam Compression (Part 2)
 
 ## 6. PySpark: RDD creation, transformations and actions
