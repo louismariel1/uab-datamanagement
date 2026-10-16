@@ -1,4 +1,4 @@
-# T6 — Spark Exam Compression (Part 2)
+# T5 — Spark Exam Compression (Part 2)
 
 ## 6. PySpark: RDD creation, transformations and actions
 
