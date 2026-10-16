@@ -4,7 +4,7 @@ This document includes complete solutions to the three Redis exercises, explanat
 
 Writing
 
-# T7 — Redis Practical Exercises and Exam Practice
+# T4 — Redis Practical Exercises and Exam Practice
 
 ## 1\. Exercise 1: API Rate Limiter — 50 Requests per Minute
 
