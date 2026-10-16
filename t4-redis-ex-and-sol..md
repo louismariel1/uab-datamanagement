@@ -1,9 +1,3 @@
-Suggested GitHub filename: `t7-redis-practical-exercises-and-exam-practice.md`
-
-This document includes complete solutions to the three Redis exercises, explanations of the commands and concepts, important implementation caveats, and additional exam practice questions with answers and explanations. The solutions use `redis-cli` syntax and assume a Redis server is running.
-
-Writing
-
 # T4 — Redis Practical Exercises and Exam Practice
 
 ## 1\. Exercise 1: API Rate Limiter — 50 Requests per Minute
