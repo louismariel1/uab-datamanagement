@@ -1,7 +1,3 @@
-Here is the merged, consolidated T1 — Data Models & Data Storage: Exam Compression (Chunks 1–3). I’ve removed repetition, unified the terminology, preserved the high-yield definitions and examples, and combined the practice questions into one revision section. You can save this directly as `T1_Data_Models_Exam_Compression_2026-2027.md`.
-
-Writing
-
 # T1 — Data Models & Data Storage
 
 ## Exam Compression — Data Management 2026–2027
