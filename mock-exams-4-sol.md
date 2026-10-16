@@ -1,7 +1,3 @@
-The three practice exams cover the main T3 topics: NoSQL concepts, MongoDB queries and updates, aggregation pipelines, distributed systems, and data modeling.
-
-I can help turn them into a comprehensive, exam-ready solution pack. The material you supplied already includes worked answers for all three exams, so the most useful improvements are to verify the calculations, clarify subtle MongoDB behaviors, and highlight common exam traps.
-
 ## Important corrections and clarifications
 
 ### 1\. Mock Exam 2 — Q14: Regional sales totals
