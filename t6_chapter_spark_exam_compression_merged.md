@@ -1,9 +1,3 @@
-Here is the merged, consolidated version of both chunks as a single Markdown file. I’ve removed duplicated sections, combined overlapping explanations, retained the exam-relevant details and code examples, and organised the material into one consistent chapter.
-
-Suggested filename: `T6-Spark-Exam-Compression.md`
-
-Writing
-
 # T6 — Apache Spark: Exam Compression
 
 **Course:** UAB 106566 — Data Management\
