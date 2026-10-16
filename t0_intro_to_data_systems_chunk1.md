@@ -1,7 +1,3 @@
-Here is the exam-focused compression for GitHub, saved under the requested filename `t0....._chunk1.md`.
-
-Writing
-
 # T1. Introduction to Data Systems — Exam Compression
 
 **Course:** Data Management (2026–27)\
