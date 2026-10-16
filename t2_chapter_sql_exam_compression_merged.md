@@ -1,8 +1,4 @@
-Here is the merged and reorganized single exam compression file for T3: SQL, combining all five chunks into one consistent revision document. I’ve removed repeated explanations, consolidated overlapping SQL examples, preserved the important exam traps, and organized the content from database fundamentals to SQL queries and B-tree indexes.
-
-Writing
-
-# EXAM COMPRESSION — T3. SQL
+# EXAM COMPRESSION — T2. SQL
 
 **Data Management 2026–27 · Complete Condensed Exam Revision Notes**
 
