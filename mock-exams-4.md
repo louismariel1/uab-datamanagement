@@ -1,17 +1,3 @@
-I have the complete T3 material. I’ll use it as the examinable scope for the new set, covering NoSQL fundamentals, ACID/BASE/CAP, all four NoSQL data models, MongoDB CRUD and query operators, aggregation pipelines, key-value and wide-column databases, and graph databases.
-
-The three exams will each be 60 minutes and 60 points, with a different emphasis:
-
-- Mock Exam 1 — Core Concepts: definitions, conceptual distinctions, database selection, and foundational MongoDB queries.
-- Mock Exam 2 — Applied Problems: CRUD operations, query operators, aggregation pipelines, and practical data-model selection.
-- Mock Exam 3 — Comprehensive Challenge: integrated scenarios, CAP trade-offs, query debugging, aggregation, and graph/data-model design.
-
-Each exam will include a complete answer key, worked solutions, explanations, and marking guidance. The output will be formatted as GitHub-ready Markdown, with fenced code blocks for MongoDB commands and clearly separated questions and solutions.
-
-Below is the complete Markdown document. You can save it as `T3_NoSQL_Practice_Exams.md` in your GitHub repository.
-
-Writing
-
 # Data Management 2026–2027
 
 # T3 — NoSQL Databases & Data Modeling
