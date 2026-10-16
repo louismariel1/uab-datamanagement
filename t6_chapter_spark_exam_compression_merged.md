@@ -1,4 +1,4 @@
-# T6 — Apache Spark: Exam Compression
+# T5 — Apache Spark: Exam Compression
 
 **Course:** UAB 106566 — Data Management\
 **Academic year:** 2026/2027\
