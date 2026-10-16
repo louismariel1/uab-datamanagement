@@ -1,0 +1,130 @@
+
+# Chunk 3 — Exam Compression: Data-Intensive Systems
+
+## 1\. Load Coping: Scalability and Elasticity
+
+- **Vertical scaling (scale up):** Increase the CPU, RAM, or capacity of one server.
+- **Horizontal scaling (scale out):** Add more servers and distribute the workload.
+- **Diagonal scaling:** Combine vertical and horizontal scaling.
+- **Elasticity:** Automatically add or remove resources in real time according to workload.
+
+**Exam rule:**
+
+- Long-term growth → **Horizontal scalability**.
+- Temporary traffic peaks → **Elasticity**.
+- A single server needs more power → **Vertical scalability**.
+- Combining approaches → **Diagonal scaling**.
+
+## 2\. Maintainability
+
+**Maintainability:** Ability to modify, correct, update, and improve a system after deployment.
+
+Three design principles:
+
+1. **Operability:** System runs efficiently and effectively in production.
+2. **Simplicity:** Reduce complexity so engineers can understand and maintain the system.
+3. **Evolvability:** Make future changes easy as requirements and use cases change.
+
+## 3\. Key Takeaways
+
+- Data-intensive applications are driven by data **volume, complexity, and rate of change**.
+- Data systems combine specialized components to handle different workloads.
+- **Reliability:** Continue operating correctly despite faults.
+- **Scalability:** Handle growth in users, traffic, and data.
+- **Maintainability:** Enable efficient correction, modification, and evolution.
+- **Performance metrics:**
+  - **Latency:** Time required to complete an operation.
+  - **Response time:** Total time between request and response.
+  - **Throughput:** Operations processed per unit of time.
+- Good architecture balances reliability, scalability, performance, and maintainability.
+
+---
+
+## 4\. Exam Problems — Model Answers
+
+### Problem 1: Classify Faults and Reliability Techniques
+
+**Scenario:** A hard drive fails, a code bug corrupts data formats, and an operator accidentally deletes data.
+
+| Fault | Classification | Mitigation |
+| --- | --- | --- |
+| Hard drive failure | Hardware fault | Redundancy, RAID, replication |
+| Bug in code | Software fault | Testing, monitoring, rollback |
+| Accidental script execution | Human fault | Access controls, confirmations, least privilege, backups |
+
+**Remember:** Hardware = physical component; software = program defect; human = operator mistake.
+
+### Problem 2: Music Streaming Scalability
+
+**Scenario:** Concurrent users increase from 10,000 to 100,000.
+
+1. **Recommended:** Horizontal scalability — add servers and distribute traffic using a load balancer.
+2. **For variable peak/off-peak traffic:** Elasticity — dynamically add resources during peaks and remove them when demand falls.
+
+### Problem 3: E-Commerce Architecture
+
+**Requirements:** Process thousands of orders per hour, store customer/product data, search products quickly, and survive server failures.
+
+**1\. Building blocks**
+
+| Component | Purpose |
+| --- | --- |
+| Database | Store customer, product, and order records |
+| Search index | Enable fast keyword-based product searches |
+| Stream processing | Process orders asynchronously and handle event streams |
+| Cache | Speed up frequent queries and reduce database load |
+| Batch processing | Analyze historical orders and perform large offline jobs |
+
+**2\. Database reliability**
+
+Use **replication** or a database cluster with failover. If one database server fails, another replica can continue serving requests, improving availability.
+
+**3\. Scaling from 10,000 to 200,000 orders/hour**
+
+- **Best primary choice:** Horizontal scaling — distribute workload across multiple servers.
+- **Elasticity:** Add/remove servers dynamically if demand fluctuates.
+- **Vertical scaling:** Useful for short-term capacity increases, but limited by hardware.
+- **Diagonal scaling:** Combine vertical and horizontal scaling.
+
+### Problem 4: Social Network Performance
+
+**Scenario A:** Response time increases from 0.5 s to 5 s as concurrent users grow.
+
+- **Affected metric:** Response time; latency may also increase.
+- **Likely issue:** Insufficient capacity under increased load.
+- **Solution:** Horizontal scaling, load balancing, and potentially caching.
+
+**Scenario B:** Search becomes slow with 50 million database records.
+
+- **Affected metrics:** Search latency increases; throughput may decrease.
+- **Likely issue:** Data-management bottleneck, inefficient queries, or missing indexes.
+- **Solution:** Dedicated search index, query/index optimization, and database scaling where needed.
+
+**Scenario C:** CPU usage stays stable, but network latency rises with traffic.
+
+- **Affected metric:** Network latency and potentially overall response time.
+- **Likely issue:** Network congestion or data-transfer bottlenecks, rather than CPU saturation.
+- **Solution:** Optimize network/data transfer, use caching or content distribution where appropriate, and apply elasticity if demand varies.
+
+**Important:** Stable CPU usage does not prove every problem is caused by data management. Diagnose the bottleneck before choosing a scaling technique.
+
+---
+
+## 5\. Last-Minute Memorization
+
+- **Reliability =** continue operating despite faults.
+- **Hardware fault =** redundancy.
+- **Software fault =** testing and rollback.
+- **Human fault =** access controls and safeguards.
+- **Vertical =** bigger server.
+- **Horizontal =** more servers.
+- **Diagonal =** both approaches.
+- **Elasticity =** resources adjust dynamically.
+- **Maintainability =** operability + simplicity + evolvability.
+- **Slow keyword search =** search index and query optimization.
+- **Database server failure =** replication and failover.
+- **Growing concurrent users =** horizontal scaling.
+- **Variable workload =** elasticity.
+- **Latency =** time per operation; **throughput =** operations per unit time.
+
+**Exam strategy:** Identify the symptom → identify the metric or fault → determine the bottleneck → choose the appropriate technique → justify it in one sentence.
