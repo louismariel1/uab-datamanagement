@@ -1,4 +1,4 @@
-# T1. Introduction to Data Systems — Exam Compression
+# T0. Introduction to Data Systems — Exam Compression
 
 **Course:** Data Management (2026–27)\
 **Professor:** Eduardo Cabrera
