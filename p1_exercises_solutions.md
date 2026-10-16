@@ -1,7 +1,3 @@
-Here is a condensed, exam-focused revision sheet covering all the supplied material: system principles and performance metrics, scalability, reliability, ER/EER conceptual modeling, cardinalities, specialization, and relational schema design. It includes the worked calculation and model patterns you can reuse in exam questions.
-
-Writing
-
 # EXAM COMPRESSION — DATA MANAGEMENT
 
 **Topics: System Principles, ER/EER Conceptual Modeling & Relational Schema**
