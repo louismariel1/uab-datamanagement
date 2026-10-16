@@ -1,11 +1,3 @@
-Below is a GitHub-ready Markdown version of the three exams, organized as a single `README.md` file. It preserves the questions, SQL examples, mark allocations, and answer keys, while correcting formatting issues such as broken code fences, mathematical notation, tables, and incomplete sections.
-
-I’ve also completed the truncated final answer for Mock Exam 3, Question 14, and included the remaining marking guidance and a consolidated exam overview.
-
-Suggested filename: `README.md`
-
-Writing
-
 # Data Management 2026–2027
 
 ## Mock Examination Collection: T0–T2
