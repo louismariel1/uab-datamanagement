@@ -1,14 +1,4 @@
-Suggested GitHub filename:
-
-` t2_data_models_chunk1.md`
-
-More precisely, without the leading space:
-
-`t2_data_models_chunk1.md`
-
-Writing
-
-# T2 — Data Models (Chunk 1)
+# T1 — Data Models (Chunk 1)
 
 ## Exam Compression — Data Management 2026–2027
 
