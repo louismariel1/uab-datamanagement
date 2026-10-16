@@ -1,4 +1,4 @@
-# T5 — In-Memory Databases (Redis)
+# T4 — In-Memory Databases (Redis)
 
 ## Exam Compression — Part 1 of 4
 
