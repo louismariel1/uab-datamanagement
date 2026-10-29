@@ -556,6 +556,426 @@ print("\nSession TTL verification passed.")
 
 The initial TTL values should be approximately 300, 600, and 900 seconds. They may be slightly lower by the time they are printed.
 
+# Complete solutions for List 2 — Unresolved tasks
+
+The following three sections provide replacement-ready solutions for the remaining tasks in your Google Colab Redis notebook:
+
+1. Deliverable 3: Simple recommender system.
+2. Deliverable 6: Atomic counter and concurrent updates.
+3. Deliverable 7: Content creator leaderboard.
+
+Each solution includes executable Python code, verification checks, sample outputs or expected behavior, and a concise explanation suitable for the final report.
+
+Before running: These examples reuse your existing `client` Redis connection, with `decode_responses=True` and the `lab1:` key prefix. The code uses demonstration users and URLs. It resets only the specifically named demo keys, not your entire Redis database.
+
+## 1. Deliverable 3 — Simple recommender system
+
+### Design
+
+The recommender will use Redis Sets to represent each user's preferred URLs.
+
+- Each user has a preference Set, such as `lab1:user:rec_demo_01:preferences`.
+- Similarity between two users is measured using Jaccard similarity:
+
+$$
+J(A,B)=\frac{|A\cap B|}{|A\cup B|}
+$$
+
+Here, $A$ and $B$ are the users' preferred-URL Sets. A score of 1 means identical preference Sets; a score of 0 means no shared URLs when the union is non-empty.
+
+- Recommendations are URLs liked by similar users but not already present in the target user's preferences.
+- Candidate URLs are ranked by how many similar users prefer them, with a higher similarity score contributing more weight.
+
+This is a simple user-based collaborative filtering approach. It is suitable for demonstrating the required Redis operations without introducing an external machine-learning library.
+
+### Replacement code cell
+
+python
+
+```
+
+# Deliverable 3 — Redis-based recommender system
+
+from collections import defaultdict
+
+def preference_key(username):
+    return f"lab1:user:{username}:preferences"
+
+def set_user_preferences(username, urls):
+    """Replace a demo user's preference Set."""
+    key = preference_key(username)
+    client.delete(key)
+
+    if urls:
+        client.sadd(key, *urls)
+
+def get_user_preferences(username):
+    return client.smembers(preference_key(username))
+
+def jaccard_similarity(user_a, user_b):
+    """Calculate Jaccard similarity between two users' preference Sets."""
+    prefs_a = get_user_preferences(user_a)
+    prefs_b = get_user_preferences(user_b)
+
+    union = prefs_a | prefs_b
+
+    if not union:
+        return 0.0
+
+    intersection = prefs_a & prefs_b
+    return len(intersection) / len(union)
+
+def find_similar_users(target_user, min_similarity=0.0):
+    """Return other demo users ranked by preference similarity."""
+    users = [
+        "rec_demo_01",
+        "rec_demo_02",
+        "rec_demo_03",
+        "rec_demo_04",
+        "rec_demo_05"
+    ]
+
+    results = []
+
+    for other_user in users:
+        if other_user == target_user:
+            continue
+
+        score = jaccard_similarity(target_user, other_user)
+
+        if score > 0 and score >= min_similarity:
+            results.append((other_user, score))
+
+    return sorted(results, key=lambda item: (-item[1], item[0]))
+
+def recommend_urls(target_user, top_n=5):
+    """
+    Recommend URLs not already preferred by the target user.
+    Similar users contribute according to their Jaccard similarity.
+    """
+    target_preferences = get_user_preferences(target_user)
+    similar_users = find_similar_users(target_user)
+
+    candidate_scores = defaultdict(float)
+
+    for similar_user, similarity in similar_users:
+        their_preferences = get_user_preferences(similar_user)
+
+        for url in their_preferences - target_preferences:
+            candidate_scores[url] += similarity
+
+    return sorted(
+        candidate_scores.items(),
+        key=lambda item: (-item[1], item[0])
+    )[:top_n]
+
+# Seed reproducible demonstration preferences.
+demo_preferences = {
+    "rec_demo_01": {"google.com", "github.com", "python.org"},
+    "rec_demo_02": {"google.com", "github.com", "stackoverflow.com"},
+    "rec_demo_03": {"google.com", "github.com", "youtube.com"},
+    "rec_demo_04": {"nytimes.com", "bbc.com"},
+    "rec_demo_05": {"python.org", "github.com", "stackoverflow.com"}
+}
+
+for username, urls in demo_preferences.items():
+    set_user_preferences(username, urls)
+
+target = "rec_demo_01"
+
+print("Target preferences:", sorted(get_user_preferences(target)))
+
+print("\nSimilar users:")
+for username, score in find_similar_users(target):
+    print(f"{username}: similarity={score:.3f}")
+
+print("\nRecommended URLs:")
+recommendations = recommend_urls(target, top_n=5)
+
+for url, score in recommendations:
+    print(f"{url}: recommendation_score={score:.3f}")
+
+# Verification: recommendations must not already be in target preferences.
+target_preferences = get_user_preferences(target)
+assert all(url not in target_preferences for url, _ in recommendations)
+
+# The closest seeded users share two of the target user's three preferences.
+similarities = dict(find_similar_users(target))
+assert abs(similarities["rec_demo_02"] - 0.5) < 1e-9
+assert abs(similarities["rec_demo_03"] - 0.5) < 1e-9
+
+print("\nRecommender verification passed.")
+```
+
+### Expected results
+
+The target user `rec_demo_01` has the preferences:
+
+text
+
+```
+google.com
+github.com
+python.org
+```
+
+Users `rec_demo_02` and `rec_demo_03` each share two of these three preferences and have a Jaccard similarity of $2/4=0.5$.
+
+The recommendations include URLs such as `stackoverflow.com` and `youtube.com`, which the target user has not already selected. The ranking is computed from the actual similarity scores and preference Sets.
+
+The exact printed list follows the implemented scoring rule. The verification checks that the two expected similarity scores are correct and that no recommended URL is already in the target user's preference Set.
+
+### Explanation for the report
+
+Redis Sets are appropriate for storing preferences because they automatically prevent duplicate URLs. `SMEMBERS` retrieves the preferences, while Python Set operations calculate the intersection and union needed for Jaccard similarity.
+
+The recommender identifies similar users, finds URLs those users prefer that the target user has not selected, and ranks the candidates using similarity-weighted scores. This is a basic collaborative filtering model; a production system could incorporate URL categories, popularity, recency, and explicit negative feedback.
+
+Limitation: The example searches a fixed collection of five demonstration users. A larger system should maintain a user index or another way to discover all users with preference data, and it should consider how to scale similarity calculations as the number of users grows.
+
+## 2. Deliverable 6 — Atomic counter and concurrent updates
+
+The original Exercise 2 already uses `INCR`. This deliverable requires explaining and demonstrating why atomic increment is safer than manually reading, modifying, and writing a counter.
+
+### Replacement code cell
+
+python
+
+```
+
+# Deliverable 6 — Demonstrate a lost update and atomic INCR
+
+counter_key = "lab1:counter:concurrency_demo"
+
+# Part A: Simulate two clients manually updating the same counter.
+client.set(counter_key, 5)
+
+# Both clients read the same initial value before either writes.
+client_a_value = int(client.get(counter_key))
+client_b_value = int(client.get(counter_key))
+
+# Each client calculates its new value independently.
+client_a_new_value = client_a_value + 1
+client_b_new_value = client_b_value + 1
+
+# Client A writes its result.
+client.set(counter_key, client_a_new_value)
+
+# Client B writes its stale result, overwriting Client A's update.
+client.set(counter_key, client_b_new_value)
+
+manual_result = int(client.get(counter_key))
+
+print("Initial counter: 5")
+print("Client A read:", client_a_value)
+print("Client B read:", client_b_value)
+print("Result after manual updates:", manual_result)
+print("Expected result after two increments: 7")
+
+assert manual_result == 6
+
+# Part B: Use atomic Redis INCR instead.
+client.set(counter_key, 5)
+
+result_a = client.incr(counter_key)
+result_b = client.incr(counter_key)
+
+atomic_result = int(client.get(counter_key))
+
+print("\nResult after two INCR operations:", atomic_result)
+print("First INCR returned:", result_a)
+print("Second INCR returned:", result_b)
+
+assert atomic_result == 7
+assert result_a == 6
+assert result_b == 7
+
+print("Atomic counter verification passed.")
+```
+
+### Expected output
+
+text
+
+```
+Initial counter: 5
+Client A read: 5
+Client B read: 5
+Result after manual updates: 6
+Expected result after two increments: 7
+
+Result after two INCR operations: 7
+First INCR returned: 6
+Second INCR returned: 7
+Atomic counter verification passed.
+```
+
+### Explanation for the report
+
+A manual counter update consists of multiple operations: read the current value, calculate the next value, and write it back. If two clients execute these steps concurrently, both may read the same initial value and then overwrite one another's results. This is known as a lost update.
+
+In the example, both clients read 5. Each calculates 6, so the final value is 6 instead of the expected 7.
+
+Redis `INCR` performs the increment atomically as one server-side operation. When two increments execute, Redis applies both operations, producing 7. Each client receives the value resulting from its own increment.
+
+The demonstration simulates the problematic interleaving deterministically; it does not depend on a race occurring by chance.
+
+Conclusion: Use `INCR` instead of a manual read-modify-write sequence when multiple clients may update a counter. Note that this guarantees atomicity of the increment itself, not atomic consistency between a counter and unrelated URL operations. If the counter must exactly reflect URL creation or deletion under concurrent requests, those operations need an appropriate transactional or scripted design.
+
+## 3. Deliverable 7 — Content creator leaderboard
+
+### Design
+
+A Redis Sorted Set (ZSET) is a natural fit for a leaderboard because each creator has a numeric score, and Redis maintains the members in score order.
+
+The implementation will:
+
+- Insert 65 content creators with initial scores.
+- Increase a creator's score.
+- Retrieve the top 10 creators in descending score order.
+- Find the rank of a particular creator.
+- Display creators ranked from position 20 through position 50, inclusive.
+- Verify that the results satisfy the assignment requirements.
+
+### Replacement code cell
+
+python
+
+```
+
+# Deliverable 7 — Content creator leaderboard using a Redis ZSET
+
+leaderboard_key = "lab1:ranking:creators"
+
+# Reset only the creator leaderboard used by this exercise.
+client.delete(leaderboard_key)
+
+# Create 65 creators with reproducible initial scores.
+creator_scores = {
+    f"creator_{i:03d}": i * 10
+    for i in range(1, 66)
+}
+
+client.zadd(leaderboard_key, creator_scores)
+
+print("Number of creators:", client.zcard(leaderboard_key))
+
+# 1. Update a creator's score.
+creator_to_update = "creator_001"
+
+updated_score = client.zincrby(
+    leaderboard_key,
+    25,
+    creator_to_update
+)
+
+print(
+    f"Updated score for {creator_to_update}:",
+    int(updated_score)
+)
+
+# 2. Retrieve the top 10 creators.
+top10 = client.zrevrange(
+    leaderboard_key,
+    0,
+    9,
+    withscores=True
+)
+
+print("\nTop 10 content creators:")
+for position, (creator, score) in enumerate(top10, start=1):
+    print(f"{position}. {creator}: {int(score)} points")
+
+# 3. Find the rank of a specific creator.
+target_creator = "creator_040"
+
+rank_zero_based = client.zrevrank(
+    leaderboard_key,
+    target_creator
+)
+
+if rank_zero_based is not None:
+    print(
+        f"\nRank of {target_creator}:",
+        rank_zero_based + 1
+    )
+else:
+    print(f"\n{target_creator} is not in the leaderboard.")
+
+# 4. Display positions 20 through 50, inclusive.
+# Redis indexes start at zero, so use indexes 19 through 49.
+positions_20_to_50 = client.zrevrange(
+    leaderboard_key,
+    19,
+    49,
+    withscores=True
+)
+
+print("\nCreators ranked from position 20 to position 50:")
+for position, (creator, score) in enumerate(
+    positions_20_to_50,
+    start=20
+):
+    print(f"{position}. {creator}: {int(score)} points")
+
+# 5. Verify all assignment requirements.
+assert client.zcard(leaderboard_key) == 65
+assert len(top10) == 10
+assert len(positions_20_to_50) == 31
+assert rank_zero_based is not None
+assert int(client.zscore(leaderboard_key, creator_to_update)) == 35
+
+# Check that the top ten are ordered from highest to lowest score.
+top_scores = [score for _, score in top10]
+assert top_scores == sorted(top_scores, reverse=True)
+
+print("\nCreator leaderboard verification passed.")
+```
+
+### Expected results
+
+65 creators inserted
+
+The dataset exceeds the requirement of 60 users.
+
+Top 10 displayed
+
+The highest scores appear first.
+
+Ranks 20–50 displayed
+
+31 entries, using the correct zero-based indexes.
+
+With the initial scores, `creator_065` has 650 points and is initially the highest-scoring creator. `creator_001` starts with 10 points and receives an additional 25, giving it 35 points.
+
+After the update, the code prints the actual ranking and the rank of `creator_040`. The exact rank should be taken from the notebook's output because scores may change as you test the leaderboard.
+
+### Explanation for the report
+
+A ZSET stores each creator as a unique member associated with a numeric score. The score can represent views, likes, followers, or a weighted combination of engagement metrics.
+
+- `ZADD` inserts creators and assigns their initial scores.
+- `ZINCRBY` increases a creator's score without manually reading and rewriting it.
+- `ZREVRANGE` retrieves members from highest to lowest score.
+- `ZREVRANK` obtains a creator's zero-based rank in descending order. Adding one converts it to a human-readable position.
+- `ZCARD` returns the total number of creators.
+
+A ZSET is suitable because it maintains an ordered ranking, supports efficient score updates, and provides rank and range queries without requiring the application to sort every creator manually after each update.
+
+When two creators have equal scores, Redis uses member ordering to break the tie. If the application requires a specific tie-breaking rule, such as the earliest achievement time, that rule must be implemented explicitly.
+
+## Final checklist for List 2
+
+| Task | Solution provided | Main verification |
+| --- | --- | --- |
+| Deliverable 3 — Recommender | Yes | Similarity scores and exclusion of already-preferred URLs |
+| Deliverable 6 — Atomic counter | Yes | Manual update produces 6; two `INCR` operations produce 7 |
+| Deliverable 7 — Creator leaderboard | Yes | 65 creators, top 10, specific rank, positions 20–50 |
+
+Before submitting, run the cells in Google Colab and retain the actual outputs. The code is designed to be reproducible, but the notebook output—not the illustrative values in the report—should be your final evidence.
+
+Together with the six replacement solutions for List 1, these three sections address the remaining identified tasks. The last step is to integrate the code and explanations into the notebook, update the data model if needed, and prepare the eight-page PDF with representative screenshots and concise explanations.
+
 The renewal should report success, preserve the session's original token, and reset its expiration to approximately 1200 seconds.
 
 After the two-second expiry test and the three-second wait, the temporary test session should no longer exist. Its `TTL` result should be `-2`, which means the key does not exist. By contrast, `TTL` returns `-1` for an existing key with no expiration.
