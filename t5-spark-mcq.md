@@ -1,14 +1,3 @@
-Absolutely. We can do everything directly here, without creating a file. You can copy the Markdown below and paste it into GitHub.
-
-I have organized the 60 Spark MCQs into three exams of 20 questions each, following the structure we used for the Redis practice bank.
-
-- Four options (A–D) per question.
-- Exactly one correct answer.
-- Correct answer and explanation immediately after each question.
-- A consolidated answer key at the end.
-- Extra emphasis on the lecturer's four explicit review questions.
-- Questions covering conceptual knowledge, code interpretation, practical applications and common exam traps.
-
 # T6 — Apache Spark: 60 MCQ Practice Bank
 
 Course: Big Data / Distributed Data Processing\
