@@ -1356,15 +1356,3 @@ Some keys will exist only after their respective cells have run. That is expecte
 [ ]Deliverable 6 — Atomic counter explanation
 
 [ ]Deliverable 7 — Creator leaderboard
-
-## What remains before submission?
-
-The technical solutions now cover the original exercises and all seven deliverables. Before treating the assignment as finished, there are three important quality checks:
-
-1. Run all cells from top to bottom in a fresh Colab runtime. This confirms that the solution does not depend on leftover data from earlier runs.
-2. Review the outputs and edge cases. In particular, verify duplicate votes, score changes, recommendation exclusions, visit ordering, TTL expiration, and leaderboard indexing.
-3. Prepare the report only after execution. Use actual notebook outputs as evidence, include the data-model diagram, and explain each design choice concisely.
-
-One important distinction: the code demonstrates the required operations and expected behavior, but the activity tracker and recommender are teaching implementations rather than fully production-safe concurrent services. Their multi-command updates and scalability limitations should be acknowledged if discussed in the report.
-
-The next stage can focus on integrating the verified results into the final report, respecting the eight-page A4 limit and including only the most useful screenshots.
