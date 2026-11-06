@@ -1,9 +1,3 @@
-Below is an initial report draft for the Redis lab, structured to fit the assignment's eight-page limit when formatted in 11-point font with single spacing. It documents the objectives, data model, implementation choices, and solutions, leaving clearly marked spaces for actual Colab outputs, screenshots, and the rendered diagram.
-
-The report is intended to be extended after you execute and verify the complete notebook. It does not claim that screenshots or runtime results have already been collected.
-
-Writing
-
 # Artificial Intelligence Degree — Course 2026–2027
 
 ## Data Management — Lab 1: Redis
