@@ -385,14 +385,3 @@ Include representative evidence for:
 9. The creator leaderboard with 65 members.
 
 The final PDF should include actual results rather than illustrative outputs, use the required 11-point font and single spacing, and remain within eight A4 pages. Screenshots should be selective and readable, with no more than two or three per exercise.
-
-## Recommended next step
-
-To turn this draft into the final submission, I recommend extending it in this order:
-
-1. Execute the notebook from a fresh Colab runtime and save the actual outputs.
-2. Insert the rendered Mermaid diagram and the most useful screenshots.
-3. Verify the numerical results, particularly the relevance scores and creator ranking.
-4. Condense the report to eight pages, preserving the data model, key code examples, explanations, and evidence.
-
-One technical detail worth checking before finalizing: the earlier creator-leaderboard example updates `creator_001` from 10 to 35, which changes the ordering of the lower-ranked creators. The rank assertions and displayed positions should be based on the actual post-update scores, not the original ordering.
